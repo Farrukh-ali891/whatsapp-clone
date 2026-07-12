@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Auth;
+namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
@@ -73,7 +73,7 @@ class AuthController extends Controller
             'otp' => $otp,
         ];
 
-        Mail::to($user->email)->send(new MailSender($mail, $mail_view));
+        // Mail::to($user->email)->send(new MailSender($mail, $mail_view));
     }
 
     public function registerView(): Response
@@ -87,14 +87,7 @@ class AuthController extends Controller
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
             'email' => 'required|email|max:255|unique:users,email',
-            'password' => [
-                'required',
-                'confirmed',
-                // 'min:8',
-                // PasswordRule::defaults()->mixedCase()->numbers()->symbols()
-                'min:3',
-                PasswordRule::defaults()
-            ],
+            'password' => ['required', 'confirmed', PasswordRule::defaults()->min(3)],
             'gender' => 'required|in:male,female,other',
             'dob' => 'required|date|before:today',
         ]);
